@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Creative Project #2</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+
+    <script src="popper.js-1.12.5/dist/umd/popper.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+
+    <script>
+
+        var mudkipArray = [258, 259, 260];
+
+        function titleCase(string) {
+            return string.replace(/-/g,' ').replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
+
+        function getRandomPokemonNumber() {
+            return Math.floor(Math.random() * (722 - 1) ) + 1;
+        }
+
+        function getTypeHTML(types) {
+            if (types.length > 1) {
+                return "<img src='assets/" + types[1].type.name + ".png'>" + "<img src='assets/" + types[0].type.name + ".png'>";
+            } else {
+                return "<img src='assets/" + types[0].type.name + ".png'>"
+            }
+        }
+
+        function shuffleArray(a) {
+            for (var i = a.length; i; i--) {
+                var j = Math.floor(Math.random() * i);
+                [a[i - 1], a[j]] = [a[j], a[i - 1]];
+            }
+        }
+
+        function getMovesHTML(moves) {
+            shuffleArray(moves);
+
+            var fourMovesArray = ["-","-","-","-"];
+
+            for (var i = 0; i < 4; i++) {
+                if (moves.length > 0) {
+                    fourMovesArray[i] = titleCase(moves.shift().move.name);
+                }
+            }
+
+            var html = "<div>" +
+                "<div class='even-slot'>" + fourMovesArray[0] + "</div>" +
+                "<div class='odd-slot'>" + fourMovesArray[1] + "</div>" +
+                "<div class='even-slot'>" + fourMovesArray[2] + "</div>" +
+                "<div class='odd-slot'>" + fourMovesArray[3] + "</div>"
+                    + "</div>";
+
+            return html;
+        }
+
+        function getAbilityHTML(abilities) {
+            var ability = abilities[Math.floor(Math.random()*abilities.length)];
+            return "<div class='ability'>" + titleCase(ability.ability.name) + "</div>";
+        }
+
+        function generateRandomPokemon(container, isMudkip) {
+            var randomInt = getRandomPokemonNumber();
+
+            if (isMudkip) {
+                randomInt = mudkipArray[Math.floor(Math.random()*3)];
+            }
+
+            var url = "https://pokeapi.co/api/v2/pokemon/" + randomInt.toString();
+            $.getJSON(url, function(data) {
+
+                var html =
+                        "<div class='even-slot'>" +
+                            "<img src='" +  data.sprites.front_default +"'>" +
+                        "</div>" +
+                        "<div class='info-holder'>"+
+                            "<div class='pokemon-name'>" + titleCase(data.name) + "</div>" +
+                            getTypeHTML(data.types) +
+                            getAbilityHTML(data.abilities) +
+                        "</div>" +
+                            getMovesHTML(data.moves);
+
+                container.html(html);
+            });
+        }
+
+        function disableButtons(isDisabled) {
+            $("#get-team-button").prop("disabled", isDisabled);
+            $("#mudkipButton").prop("disabled", isDisabled);
+        }
+
+
+        function buttonPress(isMudkip) {
+            $("#pokemon-html-container").attr("style", "display: none");
+            disableButtons(true);
+            $("#loading-gif").attr("style", "");
+            generateRandomPokemon($('#firstSlot'), isMudkip);
+            generateRandomPokemon($('#secondSlot'), isMudkip);
+            generateRandomPokemon($('#thirdSlot'), isMudkip);
+            generateRandomPokemon($('#fourthSlot'), isMudkip);
+            generateRandomPokemon($('#fifthSlot'), isMudkip);
+            generateRandomPokemon($('#sixthSlot'), isMudkip);
+
+            $(document).ajaxStop(function () {
+                $("#loading-gif").attr("style", "display: none");
+                $("#pokemon-html-container").attr("style", "");
+                disableButtons(false);
+            });
+        }
+    </script>
+
+</head>
+<body class="background">
+
+<button type="button" class="btn btn-danger" id="get-team-button" onclick="buttonPress()">Get Random Pokemon Team</button>
+<button type="button" class="btn btn-info" id="mudkipButton" onclick="buttonPress(true)">mudkipz?</button>
+
+<div style="display: none" id="loading-gif" class="center-gif">
+    <img src="assets/loading.gif" height="25%" width="25%">
+</div>
+
+<div id="pokemon-html-container" class="container center" style="display: none">
+    <div class="row">
+        <div id="firstSlot" class="col-4"></div>
+        <div id="secondSlot"class=" col-4"></div>
+        <div id="thirdSlot" class="col-4"></div>
+    </div>
+    <div class="row">
+        <div id="fourthSlot" class="col-4"></div>
+        <div id="fifthSlot" class="col-4"></div>
+        <div id="sixthSlot" class="col-4"></div>
+    </div>
+</div>
+</body>
+</html>

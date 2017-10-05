@@ -1,0 +1,70 @@
+.background {
+    background-image: url(../assets/background.jpg);
+}
+
+#mudkipButton {
+    position: fixed;
+    bottom: 0;
+    z-index: 100;
+}
+.info-holder {
+    background-color: #d5dae2
+}
+
+.info-holder * {
+    padding-top: 2%;
+    padding-bottom: 1%;
+    padding-left: 5%;
+}
+
+#get-team-button {
+    margin: 0;
+    position: fixed;
+    top: 2%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center-gif {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-25%, -50%);
+}
+
+.pokemon-name {
+    font-weight: bolder;
+    font-size: 1.7em;
+    font-family: "Courier New";
+}
+
+.ability {
+    font-style: italic;
+    font-size: 1.2em;
+}
+
+.odd-slot {
+    background-color: #d5dae2;
+    padding: 1%;
+    padding-left: 5%;
+}
+
+.even-slot {
+    background-color: #ededed;
+    padding: 1%;
+    padding-left: 5%;
+}
+
+.row {
+    padding-bottom: 2%;
+}
