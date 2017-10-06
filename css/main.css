@@ -18,11 +18,9 @@
 }
 
 #get-team-button {
-    margin: 0;
     position: fixed;
     top: 2%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 2%;
     z-index: 100;
 }
 
